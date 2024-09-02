@@ -1,6 +1,12 @@
 rate = [None,1500,4540,7090]
+bank = [20,50,100,500,1000]
 name_rate = [None,"Standard","Premium","Rare"]
 print("################Menu################\n ####  1.Standard 2.Premium 3.Rare  ####\n####################################")
+for index, value in enumerate(rate):
+    if index == 0:
+        continue  # ข้ามตำแหน่งที่ 0
+    print(f"Rate {index} : {value} Bath ", end="  ")
+print(" ")
 selectRate = int(input("Welcome CPE_SUCK chose your rate : [1-3] : "))
 selectShe = rate[selectRate]
 print(f"Cost {name_rate[selectRate]} = {selectShe}")
