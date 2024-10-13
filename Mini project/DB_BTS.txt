@@ -1,0 +1,3 @@
+คูคต,พหลโยธิน 24,15,2
+total_revenue,30
+total_change,30
