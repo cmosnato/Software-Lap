@@ -93,23 +93,23 @@ change_list = []
 def save_statistics():
     with open("Mini project//DB_BTS.txt", "w", encoding="utf-8") as file:
         for ticket in ticket_tuple:
-            file.write(f"{ticket.start_station},{ticket.end_station},{ticket.price},{ticket.many}\n")
+            file.write(f"{ticket.start_station}:{ticket.end_station}:{ticket.price}:{ticket.many}\n")
         total_revenue = sum(revenue_list)
         total_change = sum(change_list)
-        file.write(f"total_revenue,{total_revenue}\n")
-        file.write(f"total_change,{total_change}\n")
+        file.write(f"รายได้ทั้งหมด:{total_revenue}\n")
+        file.write(f"เงินถอน:{total_change}\n")
 
 # ฟังก์ชันสำหรับโหลดข้อมูลสถิติจากไฟล์
 def load_statistics():
     if os.path.exists("Mini project//DB_BTS.txt"):
         with open("Mini project//DB_BTS.txt", "r", encoding="utf-8") as file:
             for line in file:
-                data = line.strip().split(",")
-                if data[0] == "total_revenue":
+                data = line.strip().split(":")
+                if len(data) == 2 and data[0] == "รายได้ทั้งหมด":
                     revenue_list.append(int(data[1]))
-                elif data[0] == "total_change":
+                elif len(data) == 2 and data[0] == "เงินถอน":
                     change_list.append(int(data[1]))
-                else:
+                elif len(data) == 4:
                     start_station, end_station, price, many = data
                     ticket = Ticket(start_station, end_station, 0, int(price), int(many))
                     ticket_tuple.append(ticket)
