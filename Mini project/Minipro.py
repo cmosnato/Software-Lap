@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import StringVar, messagebox
 from PIL import Image, ImageTk
 import os
 
@@ -87,7 +87,9 @@ class Ticket:
 # ประกาศตัวแปรลิสต์สำหรับเก็บข้อมูล
 ticket_tuple = []     
 revenue_list = []     
-change_list = []      
+change_list = []  
+ 
+
 
 # ฟังก์ชันสำหรับบันทึกสถิติการขายลงในไฟล์
 def save_statistics():
@@ -130,6 +132,24 @@ def calculate_change_in_coins(change):
             change_details.append(f"เหรียญ {coin} บาท: {count} เหรียญ")
     
     return "\n".join(change_details)  # รวมข้อความเพื่อแสดงผลเป็นรายการ
+
+# ฟังก์ชันที่เพิ่มใหม่สำหรับการอัปเดตราคา
+def update_price():
+    start_station = start_station_var.get()
+    end_station = end_station_var.get()
+    many = many_entry.get()
+
+    # ตรวจสอบว่าใส่ข้อมูลครบก่อนคำนวณราคา
+    if start_station and end_station and many.isdigit():
+        many = int(many)
+        ticket = Ticket(start_station, end_station, 0, 0, many)  # สร้าง ticket ใหม่เพื่อคำนวณราคา
+        price = ticket.calculate_price()  # คำนวณราคาตั๋วต่อใบ
+        total_price = price * many  # คำนวณราคาทั้งหมด
+        result_label.config(text=f"ราคาตั๋วต่อใบ: {price} บาท \nทั้งหมด: {total_price} บาท")
+    else:
+        result_label.config(text="กรุณาเลือกสถานีและใส่จำนวนบัตรที่ต้องการ")
+
+
 
 def book_ticket():
     start_station = start_station_var.get()
@@ -231,6 +251,10 @@ stats_button.grid(row=5, column=0, columnspan=2, sticky="nsew", padx=10, pady=5)
 # ป้ายผลลัพธ์
 result_label = tk.Label(left_frame, text="", font=("Arial", 12), fg="white", bg="black")
 result_label.grid(row=6, column=0, columnspan=2, sticky="nsew", padx=10, pady=10)
+
+start_station_var.trace_add("write", lambda *args: update_price())
+end_station_var.trace_add("write", lambda *args: update_price())
+many_entry.bind("<KeyRelease>", lambda event: update_price())
 
 # ส่วนคู่มือการใช้งานอยู่ฝั่งขวา
 right_frame = tk.Frame(root, bg="black")  # เปลี่ยนพื้นหลังของเฟรมขวาเป็นสีดำ
