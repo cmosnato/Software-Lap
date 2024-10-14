@@ -49,10 +49,14 @@ class Ticket:
 
         if self.start_station in stations15Bath and self.end_station in stations15Bath:
             price = 15  
-        elif (self.start_station in stations15Bath and self.end_station not in stations15Bath):
-            price = 15 + self.calculate_priceNot15Bath(end_index - 15)
-        elif (self.start_station not in stations15Bath and self.end_station in stations15Bath):
-            price = 15 + self.calculate_priceNot15Bath(abs(start_index - 15))
+        elif (self.start_station in stations15Bath and self.start_station != "หมอชิต"and self.end_station not in stations15Bath):
+            price = 15 + self.calculate_priceNot15Bath(end_index - 14)
+        elif (self.start_station in stations15Bath and self.start_station == "หมอชิต"and self.end_station not in stations15Bath):
+            price = self.calculate_priceNot15Bath(end_index - 14)
+        elif (self.start_station not in stations15Bath and self.end_station in stations15Bath and self.end_station != "หมอชิต"):
+            price = 15 + self.calculate_priceNot15Bath(abs(start_index - 14))    
+        elif (self.start_station not in stations15Bath and self.end_station in stations15Bath and self.end_station == "หมอชิต"):
+            price = self.calculate_priceNot15Bath(abs(start_index - 14))
         elif (self.start_station not in stations15Bath and self.end_station not in stations15Bath):
             price = self.calculate_priceNot15Bath(abs(start_index - end_index))
 
